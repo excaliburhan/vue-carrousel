@@ -1,14 +1,34 @@
-# vue-component
-一个Vue组件模版
+# vue-carrousel
+一个Vue轮播组件
 
 ## 安装
 
-> npm i -g xpfe-cli && xpfe init vue-component [project-name]
+> npm install vue-carrousel --save
 
 ## 使用
 
-- yarn install (安装依赖)
-- npm run build (构建umd文件和压缩版的umd文件)
-- npm run dev (本地dev，服务端口：http://localhost:4000)
-- npm run demo (构建demo页面)
-- npm run deploy (发布到github-pages)
+### 全局组件
+
+```
+import VueCarrousel from 'vue-carrousel'
+Vue.use(VueCarrousel)
+```
+
+### 局部组件
+
+```
+import { VueCarrousel, VueCarrouselItem } from 'vue-carrousel'
+
+new Vue({
+  components: {
+    VueCarrousel,
+    VueCarrouselItem
+  },
+})
+
+<vue-carrousel height="300px">
+  <vue-carrousel-item v-for="item in 4" :key="item">
+    <h3}">{{ item }}</h3>
+  </vue-carrousel-item>
+</vue-carrousel>
+```

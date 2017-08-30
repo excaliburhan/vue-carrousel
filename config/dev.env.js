@@ -4,5 +4,5 @@ var prodEnv = require('./prod.env')
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
   BASE_URL: '"http://apitest.example.com"',
-  HTML_TITLE: 'vue-component - dev'
+  HTML_TITLE: 'vue-carrousel - dev'
 })

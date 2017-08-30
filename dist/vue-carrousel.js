@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["VueComponent"] = factory();
+		exports["VueCarrousel"] = factory();
 	else
-		root["VueComponent"] = factory();
+		root["VueCarrousel"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
