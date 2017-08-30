@@ -15,11 +15,11 @@ function resolve (dir) {
 
 module.exports = {
   entry: {
-    'vue-component': './src/index.js'
+    'vue-carrousel': './src/index.js'
   },
   output: {
     filename: './dist/[name].js',
-    library: 'VueComponent',
+    library: 'VueCarrousel',
     libraryTarget: 'umd'
   },
   module: {
