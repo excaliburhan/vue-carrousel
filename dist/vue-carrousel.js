@@ -650,6 +650,10 @@ exports.default = {
     playDuration: {
       type: Number,
       default: 5000
+    },
+    handleIndex: {
+      type: Number,
+      default: 0
     }
   },
   data: function data() {
@@ -667,15 +671,33 @@ exports.default = {
     activeIndex: function activeIndex(newVal, oldVal) {
       this.resetItemPosition();
       this.$emit('change', newVal, oldVal);
+    },
+    autoPlay: function autoPlay(newVal) {
+      var _this = this;
+
+      this.handleItemChange();
+      this.$nextTick(function () {
+        _this.clearTimer();
+        if (newVal) {
+          _this.startTimer();
+        }
+      });
+    },
+    handleIndex: function handleIndex(newVal, oldVal) {
+      if (!this.autoPlay) {
+        if (newVal !== oldVal) {
+          this.activeIndex = newVal;
+        }
+      }
     }
   },
 
   methods: {
     resetItemPosition: function resetItemPosition() {
-      var _this = this;
+      var _this2 = this;
 
       this.items.forEach(function (item, index) {
-        item.translateItem(index, _this.activeIndex);
+        item.translateItem(index, _this2.activeIndex);
       });
     },
     setActiveItem: function setActiveItem(index) {
@@ -691,6 +713,9 @@ exports.default = {
       if (!this.autoPlay || this.playDuration <= 0) return;
       this.timer = setInterval(this.handleIndexChange, this.playDuration);
     },
+    clearTimer: function clearTimer() {
+      this.timer && clearInterval(this.timer);
+    },
     handleItemChange: function handleItemChange() {
       this.items = this.$children.filter(function (child) {
         return child.$options.name === 'VueCarrouselItem';
@@ -702,15 +727,15 @@ exports.default = {
   },
 
   mounted: function mounted() {
-    var _this2 = this;
+    var _this3 = this;
 
     this.handleItemChange();
     this.$nextTick(function () {
-      _this2.startTimer();
+      _this3.startTimer();
     });
   },
   beforeDestroy: function beforeDestroy() {
-    this.timer && clearInterval(this.timer);
+    this.clearTimer();
   }
 };
 
