@@ -56,6 +56,12 @@
             <td>number</td>
             <td>5000</td>
           </tr>
+          <tr>
+            <td>handleIndex</td>
+            <td>手动设置的展示index，autoPlay必须为false</td>
+            <td>number</td>
+            <td>0</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -78,7 +84,7 @@ export default {
   </vue-carrousel-item>
 </vue-carrousel>`,
     }
-  }
+  },
 }
 </script>
 
