@@ -30,6 +30,10 @@ export default {
       type: Number,
       default: 5000
     },
+    handleIndex: {
+      type: Number,
+      default: 0
+    },
   },
   data () {
     return {
@@ -42,11 +46,26 @@ export default {
     items (newVal) {
       if (newVal.length > 0) this.setActiveItem(0)
     },
-
     activeIndex (newVal, oldVal) {
       this.resetItemPosition()
       this.$emit('change', newVal, oldVal)
-    }
+    },
+    autoPlay (newVal) {
+      this.handleItemChange()
+      this.$nextTick(() => {
+        this.clearTimer()
+        if (newVal) {
+          this.startTimer()
+        }
+      })
+    },
+    handleIndex (newVal, oldVal) {
+      if (!this.autoPlay) {
+        if (newVal !== oldVal) {
+          this.activeIndex = newVal
+        }
+      }
+    },
   },
 
   methods: {
@@ -68,6 +87,9 @@ export default {
       if (!this.autoPlay || this.playDuration <= 0) return
       this.timer = setInterval(this.handleIndexChange, this.playDuration)
     },
+    clearTimer () {
+      this.timer && clearInterval(this.timer)
+    },
     handleItemChange () { // 获取子组件数组
       this.items = this.$children.filter(child => child.$options.name === 'VueCarrouselItem')
     },
@@ -83,7 +105,7 @@ export default {
     })
   },
   beforeDestroy () {
-    this.timer && clearInterval(this.timer)
+    this.clearTimer()
   }
 }
 </script>

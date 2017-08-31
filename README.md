@@ -28,7 +28,7 @@ new Vue({
 
 <vue-carrousel height="300px">
   <vue-carrousel-item v-for="item in 4" :key="item">
-    <h3}">{{ item }}</h3>
+    <h3>{{ item }}</h3>
   </vue-carrousel-item>
 </vue-carrousel>
 ```
