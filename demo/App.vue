@@ -72,14 +72,11 @@ export default {
   data () {
     return {
       githubLink: 'https://github.com/excaliburhan/vue-carrousel',
-      code1: `<vue-mark :value="12">
-  <button>评论</button>
-</vue-mark>
-
-<vue-mark v-model="val1">
-  <button>回复</button>
-</vue-mark>
-`,
+      code1: `<vue-carrousel height="300px">
+  <vue-carrousel-item v-for="item in 4" :key="item">
+    <h3>{{ item }}</h3>
+  </vue-carrousel-item>
+</vue-carrousel>`,
     }
   }
 }
