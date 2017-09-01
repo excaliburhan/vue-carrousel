@@ -59,12 +59,20 @@ export default {
         }
       })
     },
-    handleIndex (newVal, oldVal) {
-      if (newVal !== oldVal && !this.autoPlay) {
+    playDuration (newVal, oldVal) {
+      if (newVal !== oldVal) {
         this.handleItemChange()
         this.$nextTick(() => {
-          this.activeIndex = newVal
+          this.clearTimer()
+          if (newVal) {
+            this.startTimer()
+          }
         })
+      }
+    },
+    handleIndex (newVal, oldVal) {
+      if (newVal !== oldVal && !this.autoPlay) {
+        this.activeIndex = newVal
       }
     },
   },
