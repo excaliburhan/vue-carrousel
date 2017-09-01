@@ -31,7 +31,7 @@ export default {
       default: 5000
     },
     handleIndex: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
   },
@@ -60,11 +60,11 @@ export default {
       })
     },
     handleIndex (newVal, oldVal) {
-      this.handleItemChange()
-      if (!this.autoPlay) {
-        if (newVal !== oldVal) {
+      if (newVal !== oldVal && !this.autoPlay) {
+        this.handleItemChange()
+        this.$nextTick(() => {
           this.activeIndex = newVal
-        }
+        })
       }
     },
   },

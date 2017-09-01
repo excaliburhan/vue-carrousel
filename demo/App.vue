@@ -8,7 +8,7 @@
     <div class="app-item">
       <h2>基础用法</h2>
       <vue-carrousel height="300px">
-        <vue-carrousel-item v-for="item in 4" :key="item">
+        <vue-carrousel-item v-for="item in number" :key="item">
           <h3 :style="{ lineHeight: '300px', textAlign: 'center', background: '#70B7FD' }">{{ item }}</h3>
         </vue-carrousel-item>
       </vue-carrousel>
@@ -64,6 +64,9 @@
           </tr>
         </tbody>
       </table>
+      <select v-model="index">
+        <option v-for="item in 4" :key="item - 1">{{ item - 1 }}</option>
+      </select>
     </div>
   </div>
 </div>
@@ -83,8 +86,12 @@ export default {
     <h3>{{ item }}</h3>
   </vue-carrousel-item>
 </vue-carrousel>`,
+      number: 2,
+      index: 0,
     }
   },
+
+  mounted () {},
 }
 </script>
 
