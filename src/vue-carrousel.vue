@@ -60,6 +60,7 @@ export default {
       })
     },
     handleIndex (newVal, oldVal) {
+      this.handleItemChange()
       if (!this.autoPlay) {
         if (newVal !== oldVal) {
           this.activeIndex = newVal
