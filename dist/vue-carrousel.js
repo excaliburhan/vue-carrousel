@@ -683,14 +683,22 @@ exports.default = {
         }
       });
     },
-    handleIndex: function handleIndex(newVal, oldVal) {
+    playDuration: function playDuration(newVal, oldVal) {
       var _this2 = this;
 
-      if (newVal !== oldVal && !this.autoPlay) {
+      if (newVal !== oldVal) {
         this.handleItemChange();
         this.$nextTick(function () {
-          _this2.activeIndex = newVal;
+          _this2.clearTimer();
+          if (newVal) {
+            _this2.startTimer();
+          }
         });
+      }
+    },
+    handleIndex: function handleIndex(newVal, oldVal) {
+      if (newVal !== oldVal && !this.autoPlay) {
+        this.activeIndex = newVal;
       }
     }
   },
