@@ -652,7 +652,7 @@ exports.default = {
       default: 5000
     },
     handleIndex: {
-      type: Number,
+      type: [Number, String],
       default: 0
     }
   },
@@ -684,20 +684,23 @@ exports.default = {
       });
     },
     handleIndex: function handleIndex(newVal, oldVal) {
-      if (!this.autoPlay) {
-        if (newVal !== oldVal) {
-          this.activeIndex = newVal;
-        }
+      var _this2 = this;
+
+      if (newVal !== oldVal && !this.autoPlay) {
+        this.handleItemChange();
+        this.$nextTick(function () {
+          _this2.activeIndex = newVal;
+        });
       }
     }
   },
 
   methods: {
     resetItemPosition: function resetItemPosition() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.items.forEach(function (item, index) {
-        item.translateItem(index, _this2.activeIndex);
+        item.translateItem(index, _this3.activeIndex);
       });
     },
     setActiveItem: function setActiveItem(index) {
@@ -727,11 +730,11 @@ exports.default = {
   },
 
   mounted: function mounted() {
-    var _this3 = this;
+    var _this4 = this;
 
     this.handleItemChange();
     this.$nextTick(function () {
-      _this3.startTimer();
+      _this4.startTimer();
     });
   },
   beforeDestroy: function beforeDestroy() {
