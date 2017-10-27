@@ -47,7 +47,7 @@ export default {
       if (newVal.length > 0) this.setActiveItem(0)
     },
     activeIndex (newVal, oldVal) {
-      this.resetItemPosition()
+      this.resetItemPosition(oldVal)
       this.$emit('change', newVal, oldVal)
     },
     autoPlay (newVal) {
@@ -78,12 +78,13 @@ export default {
   },
 
   methods: {
-    resetItemPosition () { // 设置子组件的位置
+    resetItemPosition (oldIndex) { // 设置子组件的位置
       this.items.forEach((item, index) => {
-        item.translateItem(index, this.activeIndex) // translateItem为子组件的methods
+        item.translateItem(index, this.activeIndex, oldIndex) // translateItem为子组件的methods
       })
     },
     setActiveItem (index) { // 设置active的子组件
+      let length = this.items.length
       if (index < 0) {
         this.activeIndex = length - 1
       } else if (index >= length) {
@@ -103,7 +104,11 @@ export default {
       this.items = this.$children.filter(child => child.$options.name === 'VueCarrouselItem')
     },
     handleIndexChange () {
-      this.activeIndex = (this.activeIndex + 1) % this.items.length
+      if (this.activeIndex < this.items.length - 1) {
+        this.activeIndex++
+      } else {
+        this.activeIndex = 0
+      }
     },
   },
 
