@@ -580,7 +580,8 @@ exports.default = {
     return {
       translate: 0,
       active: false,
-      ready: false
+      ready: false,
+      animating: false
     };
   },
 
@@ -591,20 +592,25 @@ exports.default = {
   },
 
   methods: {
-    translateItem: function translateItem(index, activeIndex) {
+    translateItem: function translateItem(index, activeIndex, oldIndex) {
       var parentWidth = this.$parent.$el.offsetWidth;
       var parentHeight = this.$parent.$el.offsetHeight;
       var length = this.$parent.items.length;
+      this.animating = index === activeIndex || index === oldIndex;
       index = this.calcIndex(index, activeIndex, length);
       this.active = index === activeIndex;
       this.translate = (this.$parent.direction === 'x' ? parentWidth : parentHeight) * (index - activeIndex);
       this.ready = true;
     },
     calcIndex: function calcIndex(index, activeIndex, length) {
-      if (index - activeIndex > length / 2) {
-        return index - length;
-      } else if (activeIndex - index > length / 2) {
-        return index + length;
+      if (activeIndex === 0 && index === length - 1) {
+        return -1;
+      } else if (activeIndex === length - 1 && index === 0) {
+        return length;
+      } else if (index < activeIndex - 1 && activeIndex - index >= length / 2) {
+        return length + 1;
+      } else if (index > activeIndex + 1 && index - activeIndex >= length / 2) {
+        return -2;
       }
       return index;
     }
@@ -669,7 +675,7 @@ exports.default = {
       if (newVal.length > 0) this.setActiveItem(0);
     },
     activeIndex: function activeIndex(newVal, oldVal) {
-      this.resetItemPosition();
+      this.resetItemPosition(oldVal);
       this.$emit('change', newVal, oldVal);
     },
     autoPlay: function autoPlay(newVal) {
@@ -704,14 +710,15 @@ exports.default = {
   },
 
   methods: {
-    resetItemPosition: function resetItemPosition() {
+    resetItemPosition: function resetItemPosition(oldIndex) {
       var _this3 = this;
 
       this.items.forEach(function (item, index) {
-        item.translateItem(index, _this3.activeIndex);
+        item.translateItem(index, _this3.activeIndex, oldIndex);
       });
     },
     setActiveItem: function setActiveItem(index) {
+      var length = this.items.length;
       if (index < 0) {
         this.activeIndex = length - 1;
       } else if (index >= length) {
@@ -733,7 +740,11 @@ exports.default = {
       });
     },
     handleIndexChange: function handleIndexChange() {
-      this.activeIndex = (this.activeIndex + 1) % this.items.length;
+      if (this.activeIndex < this.items.length - 1) {
+        this.activeIndex++;
+      } else {
+        this.activeIndex = 0;
+      }
     }
   },
 
@@ -796,7 +807,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n.vue-carrousel__item[data-v-7f4ed9ac] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 1;\n  transition: .4s ease-in-out;\n}\n.vue-carrousel__item.is-active[data-v-7f4ed9ac] {\n    z-index: 2;\n}\n", ""]);
+exports.push([module.i, "\n.vue-carrousel__item[data-v-7f4ed9ac] {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 1;\n}\n.vue-carrousel__item.is-active[data-v-7f4ed9ac] {\n    z-index: 2;\n}\n.vue-carrousel__item.is-animating[data-v-7f4ed9ac] {\n    transition: transform .4s ease-in-out;\n}\n", ""]);
 
 // exports
 
@@ -829,7 +840,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "vue-carrousel__item",
     class: {
-      'is-active': _vm.active
+      'is-active': _vm.active, 'is-animating': _vm.animating
     },
     style: ({
       msTransform: ("translate" + _vm.upperDirection + "(" + _vm.translate + "px)"),
